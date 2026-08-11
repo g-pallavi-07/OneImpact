@@ -35,3 +35,22 @@ def refresh_user_session(refresh_token):
     response = supabase.auth.refresh_session(refresh_token)
 
     return response
+
+def get_user_profile(user_id):
+
+    response = (
+        supabase
+        .table("profiles")
+        .select("*")
+        .eq("id", user_id)
+        .single()
+        .execute()
+    )
+
+    return response.data
+
+def logout_user():
+
+    response = supabase.auth.sign_out()
+
+    return response

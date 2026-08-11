@@ -4,11 +4,17 @@ from services.auth_service import (
     signup_user,
     login_user,
     get_current_user,
-    refresh_user_session
+    refresh_user_session,
+    get_user_profile,
+    logout_user
 )
 
-from utils.auth import require_auth
-from config.supabase import supabase
+from utils.auth import (
+    require_auth,
+    auth_required,
+    role_required
+)
+from services.profile_service import get_profile
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -99,12 +105,18 @@ def login():
         session = response.session
         user = response.user
 
+        profile = get_user_profile(user.id)
+
         return jsonify({
             "message": "Login successful",
+
             "user": {
                 "id": user.id,
                 "email": user.email
             },
+
+            "profile": profile,
+
             "session": {
                 "access_token": session.access_token,
                 "refresh_token": session.refresh_token
@@ -124,16 +136,7 @@ def me():
 
         user = require_auth()
 
-        profile_response = (
-            supabase
-            .table("profiles")
-            .select("*")
-            .eq("id", user.id)
-            .single()
-            .execute()
-        )
-
-        profile = profile_response.data
+        profile = get_profile(user.id)
 
         return jsonify({
             "user": {
@@ -187,20 +190,29 @@ def refresh():
         }), 401
 
 @auth_bp.route("/protected-test", methods=["GET"])
-def protected_test():
+@auth_required
+def protected_test(user):
+
+    return jsonify({
+        "message": "Authentication successful",
+        "user_id": user.id,
+        "email": user.email
+    }), 200
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
 
     try:
 
-        user = require_auth()
+        logout_user()
 
         return jsonify({
-            "message": "Authentication successful",
-            "user_id": user.id,
-            "email": user.email
+            "message": "Logout successful"
         }), 200
 
     except Exception as e:
 
         return jsonify({
             "error": str(e)
-        }), 401
+        }), 400
+
