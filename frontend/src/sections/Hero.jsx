@@ -43,7 +43,7 @@ export default function Hero() {
         </p>
 
         <div className="mt-8 md:mt-9">
-          <Button href="#get-involved">Join the Movement</Button>
+          <Button href='/login'>Join the Movement</Button>
         </div>
       </div>
     </section>
