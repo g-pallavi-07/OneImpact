@@ -18,18 +18,9 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/missions" element={<Mission />} />
-        <Route
-          path="/ai-organizer"
-          element={<AIMissionOrganizer />}
-        />
-        <Route
-          path="/ngos"
-          element={<NGODirectory />}
-        />
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
+        <Route path="/ai-organizer" element={<AIMissionOrganizer />}/>
+        <Route path="/ngos" element={<NGODirectory />}/>
+        <Route path="/profile" element={<Profile />}/>
       </Routes>
     </div>
   )
