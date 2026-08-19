@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage.jsx'
 import Mission from './pages/Mission.jsx'
 import AIMissionOrganizer from './pages/AIMissionOrganizer.jsx'
 import NGODirectory from "./pages/NGODirectory";
+import Profile from "./pages/Profile";
 export default function App() {
   return (
     <div className="min-h-screen bg-cream  ">
@@ -24,6 +25,10 @@ export default function App() {
         <Route
           path="/ngos"
           element={<NGODirectory />}
+        />
+        <Route
+          path="/profile"
+          element={<Profile />}
         />
       </Routes>
     </div>
